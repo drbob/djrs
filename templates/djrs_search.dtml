@@ -1,0 +1,86 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+
+	<h2>Searches</h2>
+	<a class="btn btn-primary" href="/searches/">Refresh</a>
+        {# Search Form #}
+	{% if form %}
+		<h2>Begin New Search</h2>
+		<div class="row-fluid">
+			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+			<form action="/searches/" method="post">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" class="btn btn-primary" value="Search" />
+			</form>
+		</div><!--/row-->
+	{% else %}
+		<div class="row-fluid">
+			{% if search_started %}
+				<h2> Search Started for: {{ search_terms }} </h2>
+			{% else %}
+				<h2> Search Attempt Failed </h2>
+			{% endif %}
+		</div><!--/row-->
+	{% endif %}
+
+        {# Search Results #}
+	<div class="row-fluid">
+		<div class="span9">
+			{% if search_list %}
+				<h2> Search Results </h2>
+			{% endif %}
+			{% for search in search_list %}
+				<div>
+					<h3> Search Set ID: {{search.search_id}}</h3>
+					<a class="btn btn-primary" href="/search/{{search.search_id}}/close/">Close</a>
+
+					{% if search.hits %}
+						<table>
+						<thead>
+						<th> name </th>
+						<th> hash </th>
+						<th> size </th>
+						<th> loc </th>
+						<th> #hits </th>
+						<th> action </th>
+						</thead>
+						<tbody>
+					{% endif %}
+					{% for hit in search.hits %}
+						<tr>
+						<td> {{hit.file.name}} </td>
+						<td> {{hit.file.hash}} </td>
+						<td> {{hit.file.size}} </td>
+						<td> {{hit.loc}} </td>
+						<td> {{hit.no_hits}} </td>
+						<td> <a class="btn" href="/transfer/{{hit.file.hash}}/download/?size={{hit.file.size}}&name={{hit.file.name}}">Download</a> </td>
+						</tr>
+
+						{% for altname in hit.alt_names %}
+							<tr>
+							<td> {{altname}} </td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td> <a class="btn" href="/transfer/{{hit.file.hash}}/download/?size={{hit.file.size}}&name={{altname}}">Download</a> </td>
+							</tr>
+						{% endfor %}
+					{% endfor %}
+					{% if search.hits %}
+						</tbody>
+						</table>
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div><!--/span-->
+	</div><!--/row-->
+
+</div><!--/span-->
+{% endblock content %}
+
+
+

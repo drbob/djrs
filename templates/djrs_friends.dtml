@@ -1,0 +1,63 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+	<div class="row-fluid">
+		<div class="span9">
+			<h2> Friends </h2>
+			<div>
+				<table>
+				<thead>
+				<th> Name </th>
+				{# <th> PGP ID </th> #}
+				<th> Relation </th>
+				<th> Location </th>
+				{# <th> SSL ID </th> #}
+				<th> Extern Addr </th>
+				<th> Local Addr </th>
+				<th> State </th>
+				<th> actions </th>
+				</thead>
+
+				<tbody>
+			{% for friend in friend_list %}
+				<tr>
+				<td> {{friend.name}} </td>
+				{# <td> {{friend.gpg_id}} </td> #}
+				<td> {{friend.relation}} </td>
+				{# <td></td> #}
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td> 
+                        	     <a class="btn btn-primary" href="/friend/{{friend.gpg_id}}/">Details</a>
+				</td>
+				</tr>
+
+				{% for location in friend.locations %}
+					<tr>
+					<td></td>
+					{# <td></td> #}
+					<td></td>
+					<td> {{location.location}} </td>
+					{# <td> {{location.ssl_id}} </td> #}
+					<td> {{location.extaddr.addr}}:{{location.extaddr.port}} </td>
+					<td> {{location.localaddr.addr}}:{{location.localaddr.port}} </td>
+					<td> {{location.state}} </td>
+					<td>
+					{% if location.state == 2 %}
+                        			<a class="btn btn-primary" href="/chat/friend/{{location.ssl_id}}/">Chat</a>
+					{% endif %}
+					</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+				</tbody>
+				</table>
+			</div>
+		</div><!--/span-->
+	</div><!--/row-->
+</div><!--/span-->
+{% endblock content %}
+

@@ -1,0 +1,27 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+	<div class="row-fluid">
+		<h2> Retroshare Apps </h2>
+
+		<p> Currently the following Apps have Web Interfaces: </p>
+	</div><!--/row-->
+	<div class="row-fluid">
+		<a class="btn btn-primary btn-large" href="/friends/">Friends</a>
+		<p>Who do you know and who is online</p>
+	</div><!--/row-->
+	<div class="row-fluid">
+		<a class="btn btn-primary btn-large" href="/chat/">Chat</a>
+		<p>Look through the available Chat Lobbies</p>
+	</div><!--/row-->
+	<div class="row-fluid">
+		<a class="btn btn-primary btn-large" href="/transfers/">Transfers</a>
+		<p>What is flying over the Wire?</p>
+	</div><!--/row-->
+	<div class="row-fluid">
+		<a class="btn btn-primary btn-large" href="/searches/">Search</a>
+		<p>Find Stuff</p>
+	</div><!--/row-->
+</div><!--/span-->
+{% endblock content %}

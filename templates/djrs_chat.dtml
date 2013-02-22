@@ -1,0 +1,63 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+
+	<h2>Chat</h2>
+	<a class="btn btn-primary" href="/chat/">Refresh</a>
+
+	<div class="row-fluid">
+		<div class="span9">
+			{% if lobby_list %}
+				<h2> Chat Lobbies </h2>
+				<div>
+					<table>
+					<thead>
+					<th> Lobby </th>
+					<th> Lobby ID </th>
+					<th> Topic </th>
+					<th> Nickname </th>
+					<th> Privacy </th>
+					<th> State </th>
+					<th> No Peers </th>
+					<th> LastReportTime</th>
+					<th> LastActivity </th>
+					<th> FriendsHere </th>
+					<th> Actions </th>
+					</thead>
+					<tbody>
+			{% else %}
+				<h2> No Chat Lobbies Available </h2>
+			{% endif %}
+			{% for lobby in lobby_list %}
+					<tr>
+					<td> {{lobby.lobby_name}} 	</td>
+					<td> {{lobby.lobby_id}} 	</td>
+					<td> {{lobby.lobby_topic}} 	</td>
+					<td> {{lobby.lobby_nickname}} 	</td>
+					<td> {{lobby.privacy_level}} 	</td>
+					<td> {{lobby.lobby_state}} 	</td>
+					<td> {{lobby.no_peers}} 	</td>
+					<td> {{lobby.last_report_time}} 	</td>
+					<td> {{lobby.last_activity}} 	</td>
+					<td>
+						{% for friend in lobby.participating_friends %}
+							{{friend}} 
+						{% endfor %} 
+				 	</td>
+					<td>
+                                		<a class="btn" href="/lobby/{{lobby.lobby_id}}/join/">Join</a>
+                                		<a class="btn" href="/lobby/{{lobby.lobby_id}}/">Chat</a>
+                                		<a class="btn" href="/lobby/{{lobby.lobby_id}}/drop/">Drop</a>
+				 	</td>
+					</tr>
+			{% endfor %}
+			{% if lobby_list %}
+					</tbody>
+					</table>
+				</div>
+			{% endif %}
+		</div><!--/span-->
+	</div><!--/row-->
+</div><!--/span-->
+{% endblock content %}

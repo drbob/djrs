@@ -1,0 +1,24 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+	<div class="row-fluid">
+
+		<div>
+			<h2> Welcome to your Retroshare Node! </h2>
+			<p> Congratulations on getting this far! </p>
+		</div>
+
+
+		<div>
+			<h4> Development </h4>
+			<p> The DjRS Interface is experimental at the moment, and we need your help to improve it
+			</p>
+			<p> If you have any <strong>Django</strong>, <strong>Javascript</strong> or <strong>CSS experience</strong> and want to help out - please get in touch. </p>
+			<p> You can checkout the DjRS code from <a href="https://github.com/drbob/djrs"> Drbob's Github Repo </a> 
+			</p>
+		</div>
+	</div><!--/row-->
+
+</div><!--/span-->
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends "base_loggedout.dtml" %}
+
+{% block title %} DjRS is Busy {% endblock %}
+
+{# Empty Sidebar - for main page #}
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content %}
+<div class="span12">
+	<div class="hero-unit">
+		<h2>This DjRS Terminal is Busy</h2>
+		<p>Try again in 10 minutes</p>
+		<p><a class="btn btn-primary" href="/login/">Login</a></p>
+	</div><!--/hero-->
+</div><!--/span-->
+{% endblock content %}

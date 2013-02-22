@@ -1,0 +1,56 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+
+	<a class="btn btn-primary" href="/chat/friend/{{peer_id}}/">Refresh</a>
+
+	<div class="row-fluid">
+		<h2>Chat With Friends</h2>
+		<p> Friend Chat is not working properly, yet</p>
+		<p> You can send messages, and see part of the chat history, but no new messages from your friend </p>
+	</div><!--/row-->
+
+	<div class="row-fluid">
+		<h2> Chatting with {{peer_id}} </h2>
+	</div><!--/row-->
+
+	<div class="row-fluid">
+		{% if messages %}
+			<h2>Message History</h2>
+			<div>
+				<table>
+				<thead>
+				<th> name </th>
+				<th> time </th>
+				<th> msg </th>
+				</thead>
+
+				<tbody>
+
+			{% for message in messages %}
+				<tr>
+				<td> {{message.peer_nickname}} 	</td>
+				<td> {{message.msg|striptags}} 		</td>
+				<td> {{message.recv_time}} 	</td>
+				</tr>
+			{% endfor %}
+				
+				</tbody>
+				</table>
+			</div>
+
+		{% else %}
+			<h2>No Message History</h2>
+		{% endif %}
+	</div><!--/row-->
+	<div class="row-fluid">
+		<form action="/message/friend/{{peer_id}}" method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" class="btn btn-primary" value="message" />
+		</form>
+	</div><!--/row-->
+
+</div><!--/span-->
+{% endblock content %}

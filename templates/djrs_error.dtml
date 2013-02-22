@@ -1,0 +1,13 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+
+	<h2>ERROR</h2>
+        <p> {{error_message}} </p>
+
+</div><!--/span-->
+{% endblock content %}
+
+
+

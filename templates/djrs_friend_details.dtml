@@ -1,0 +1,25 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+	<div class="row-fluid">
+		<h2> Your Friend's Details </h2>
+
+		{% for friend in friend_list %}
+			<h3> Friend : {{friend.name}} </h3>
+			<p> ID: {{friend.gpg_id}}</p> 
+			<p> Relation : {{friend.relation}}</p> 
+
+			{% for location in friend.locations %}
+				<h4> Location   : {{location.location}} </h4>
+				<h4> SSL_ID     : {{location.ssl_id}}   </h4>
+				<p> Extern Addr : {{location.extaddr.addr}}:{{location.extaddr.port}} </p>
+				<p> Local  Addr : {{location.localaddr.addr}}:{{location.localaddr.port}} </p>
+				<p> State       : {{location.state}}</p> 
+			{% endfor %}
+
+		{% endfor %}
+	</div><!--/row-->
+</div><!--/span-->
+{% endblock content %}
+

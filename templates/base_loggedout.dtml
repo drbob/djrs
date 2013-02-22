@@ -1,0 +1,16 @@
+{% extends "base.dtml" %}
+
+{% block navbar-login %}
+	<p class="navbar-text pull-right">
+		<a href="/login/" class="navbar-link">Login</a>
+	</p>
+{% endblock %}
+
+
+{% block navbar-menu %}
+	<ul class="nav">
+		<li><a href="/about/">About</a></li>
+	</ul>
+{% endblock %}
+
+

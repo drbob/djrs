@@ -1,0 +1,46 @@
+{% extends "base.dtml" %}
+
+{% block title %} Retroshare {% endblock %}
+
+{# Generic Status Sidebar #}
+{% block sidebar-nav %}
+	{# Top Of List: Basic Status, from ContextProcessor #}
+	<ul class="nav nav-list">
+		{# status #}
+		{% if pyrs_status.connected %}
+			<li class="nav-header">Connected</li>
+			<li>{{ pyrs_status.no_connected }} of {{ pyrs_status.no_peers }} Peers Online</li>
+			<li>Upload Rate: {{ pyrs_status.upload_rate|floatformat:2 }} (kB/s)</li>
+			<li>Download Rate: {{ pyrs_status.download_rate|floatformat:2 }} (kB/s)</li>
+			{# <li>Network Status: {{ pyrs_status.network_status }}</li> #}
+		{% else %}
+			<li class="nav-header">Disconnected</li>
+			<li><a href="/login/">Login</a></li>
+		{% endif %}
+
+		{% if sidebar_menu %}
+			<li class="nav-header">{{sidebar_menu}}</li>
+		{% endif %}
+		{% for sublink in sidebar_sublinks %}
+			<li><a href="{{sublink.url}}">{{sublink.name}}</a></li>
+		{% endfor %}
+
+		<li class="nav-header">Applications</li>
+		<li><a href="/friends/">Friends</a></li>
+		<li><a href="/chat/">Chat</a></li>
+		<li><a href="/transfers/">Transfers</a></li>
+		<li><a href="/searches/">Searches</a></li>
+	</ul>
+{% endblock sidebar-nav %}
+
+{% block content %}
+<div class="span9">
+	<div class="hero-unit">
+                <div class="row-fluid">
+			<div class="span9">
+				<h2> Retroshare </h2>
+                        </div><!--/span-->
+                </div><!--/row-->
+	</div>
+</div><!--/span-->
+{% endblock content %}

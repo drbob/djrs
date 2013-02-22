@@ -1,0 +1,26 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+	<div class="row-fluid">
+		<h2> Retroshare </h2>
+
+		Retroshare is a Friend-2-Friend social network. Completely decentralised and free for all 
+		<a href="http://retroshare.org"> Retroshare Website </a>
+
+		</p>
+
+	</div><!--/row-->
+	<div class="row-fluid">
+
+		<h2> DjRS </h2>
+
+		DjRS is the Web Interface for Retroshare, it has no website of its own, 
+		but you can follow development here:
+		<a href="https://github.com/drbob/djrs"> DjRS @ Github </a>
+
+		</p>
+	</div><!--/row-->
+
+</div><!--/span-->
+{% endblock content %}

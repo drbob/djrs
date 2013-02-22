@@ -1,0 +1,67 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+
+	<a class="btn btn-primary" href="/lobby/{{lobby_id}}/">Refresh</a>
+
+	<div class="row-fluid">
+		<h2>Lobby Chat </h2>
+		<p> Lobby Chat is not working properly, yet</p>
+		<p> You can send messages, but cannot see anyone else's messages</p>
+
+	</div><!--/row-->
+	<div class="row-fluid">
+
+		{% if lobby_details %}
+			<h2>Lobby: {{lobby_details.lobby_name}} </h2>
+
+			<div>
+				<table>
+				<thead>
+				<th> Lobby ID </th>
+				<th> Topic </th>
+				<th> Nickname </th>
+				<th> Privacy </th>
+				<th> State </th>
+				<th> No Peers </th>
+				<th> LastReportTime</th>
+				<th> LastActivity </th>
+				<th> FriendsHere </th>
+				<th> Actions </th>
+				</thead>
+
+				<tbody>
+				<tr>
+				<td> {{lobby_details.lobby_id}} 	</td>
+				<td> {{lobby_details.lobby_topic}} 	</td>
+				<td> {{lobby_details.lobby_nickname}} 	</td>
+				<td> {{lobby_details.privacy_level}} 	</td>
+				<td> {{lobby_details.lobby_state}} 	</td>
+				<td> {{lobby_details.no_peers}} 	</td>
+				<td> {{lobby_details.last_report_time}} 	</td>
+				<td> {{lobby_details.last_activity}} 	</td>
+				<td>
+				{% for friend in lobby_details.participating_friends %}
+					{{friend}} 
+				{% endfor %} 
+			 	</td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+
+		{% else %}
+			<h2> Lobby: {{lobby_id}} Details Unavailable</h2>
+		{% endif %}
+	</div><!--/row-->
+	<div class="row-fluid">
+		<form action="/message/lobby/{{lobby_id}}" method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" class="btn btn-primary" value="message" />
+		</form>
+	</div><!--/row-->
+
+</div><!--/span-->
+{% endblock content %}

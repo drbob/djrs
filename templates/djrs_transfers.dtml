@@ -1,0 +1,88 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+
+	<h2>Transfers</h2>
+	<a class="btn btn-primary" href="/transfers/">Refresh</a>
+
+        {# Transfer Details #}
+	<div class="row-fluid">
+		<div class="span9">
+			{% if upload_list %}
+				<h2> Uploads </h2>
+				<div>
+					<table>
+					<thead>
+					<th> name </th>
+					<th> hash </th>
+					<th> size </th>
+					<th> fraction(0=>1)</th>
+					<th> rate(kB/s) </th>
+					<th> actions </th>
+					</thead>
+					<tbody>
+			{% else %}
+				<h2> No Uploads </h2>
+			{% endif %}
+			{% for upload in upload_list %}
+					<tr>
+					<td> {{upload.file.name}} </td>
+					<td> {{upload.file.hash}} </td>
+					<td> {{upload.file.size}} </td>
+					<td> {{upload.fraction|floatformat:2}} </td>
+					<td> {{upload.rate_kBs|floatformat:2}} </td>
+					<td> </td>
+					</tr>
+			{% endfor %}
+			{% if upload_list %}
+					</tbody>
+					</table>
+				</div>
+			{% endif %}
+		</div><!--/span-->
+	</div><!--/row-->
+	<div class="row-fluid">
+		<div class="span9">
+			{% if download_list %}
+				<h2> Downloads </h2>
+				<div>
+					<table>
+					<thead>
+					<th> name </th>
+					<th> hash </th>
+					<th> size </th>
+					<th> fraction(0=>1)</th>
+					<th> rate(kB/s) </th>
+					<th> actions </th>
+					</thead>
+					<tbody>
+			{% else %}
+				<h2> No Downloads </h2>
+			{% endif %}
+			{% for download in download_list %}
+					<tr>
+					<td> {{download.file.name}} </td>
+					<td> {{download.file.hash}} </td>
+					<td> {{download.file.size}} </td>
+					<td> {{download.fraction|floatformat:2}} </td>
+					<td> {{download.rate_kBs|floatformat:2}} </td>
+					<td> 
+						{# Buttons don't work yet! #}
+						{# <a class="btn" href="/transfer/{{download.file.hash}}/pause/">Pause</a> #}
+						{# <a class="btn" href="/transfer/{{download.file.hash}}/start/">Go</a> </td> #}
+					</tr>
+			{% endfor %}
+			{% if download_list %}
+					</tbody>
+					</table>
+				</div>
+			{% endif %}
+		</div><!--/span-->
+	</div><!--/row-->
+
+</div><!--/span-->
+{% endblock content %}
+
+
+

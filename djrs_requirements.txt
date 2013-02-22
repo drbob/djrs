@@ -1,0 +1,4 @@
+django
+paramiko
+flup
+protobuf==2.4.1
