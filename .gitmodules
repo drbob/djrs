@@ -1,5 +1,5 @@
 [submodule "pyrs"]
 	path = submodules/pyrs
-	url = git@github.com:/drbob/pyrs.git
+	url = git://github.com/drbob/pyrs.git
 
 

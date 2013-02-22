@@ -42,6 +42,7 @@ Running As Production Web Interface.
 In djrs.settings:
 
 Change the SECRET_KEY
+
 Specify STATIC_ROOT for your Production System.
 
 Setup an external face https server. (nginx, apache, etc)
