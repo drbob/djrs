@@ -7,6 +7,13 @@ Django based Web Interface to Retroshare
 Development Setup
 ===================
 
+check out the code:
+
+    git clone git://github.com/drbob/djrs.git djrs
+    cd djrs
+    git submodule update --init
+
+
 Install the python requirements:
  - django (1.4.X)       (Web Framework)
  - paramiko (>=1.9.0)   (python SSH client)
