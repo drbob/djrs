@@ -61,7 +61,9 @@ import django.contrib.staticfiles
 
 # dependencies
 import paramiko
+import google
 import google.protobuf.descriptor
+import rs_logging
 
 # Apps.
 import djrs.urls
@@ -69,5 +71,7 @@ import djrs.middleware
 import djrs.context_processors
 import djrs.views
 import djrs.forms
+import djrs.settings
+
 
 

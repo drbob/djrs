@@ -134,6 +134,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(SITE_ROOT, 'templates'),
+    os.path.join(os.path.dirname(SITE_ROOT), 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

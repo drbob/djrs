@@ -75,3 +75,45 @@ def friend_details(request, friend_id):
     return render_to_response('djrs_friend_details.dtml', template_vars, context_instance=RequestContext(request))
 
 
+
+def friend_add(request, friend_id):
+    logging.info("djrs.view.friend_add")
+
+    harness = getWebHarness()
+    if harness.is_connected() is False:
+        return HttpResponseRedirect(reverse('djrs_login'))
+
+    template_vars = {}
+    try:
+        (req_id, msg_id) = harness.request_friend_add(friend_id, True)
+        resp = harness.specific_response(req_id)
+        if resp:
+            (resp_id, resp_msg) = resp
+            # should check the result...
+
+    except Exception, e:
+        logging.info("Unexpected Exception: %s" % (e))
+
+    return HttpResponseRedirect(reverse('djrs_friends'))
+
+
+def friend_remove(request, friend_id):
+    logging.info("djrs.view.friend_remove")
+
+    harness = getWebHarness()
+    if harness.is_connected() is False:
+        return HttpResponseRedirect(reverse('djrs_login'))
+
+    template_vars = {}
+    try:
+        (req_id, msg_id) = harness.request_friend_add(friend_id, False)
+        resp = harness.specific_response(req_id)
+        if resp:
+            (resp_id, resp_msg) = resp
+            # should check the result...
+
+    except Exception, e:
+        logging.info("Unexpected Exception: %s" % (e))
+
+    return HttpResponseRedirect(reverse('djrs_friends'))
+

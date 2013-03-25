@@ -31,7 +31,14 @@
 				<td></td>
 				<td></td>
 				<td> 
-                        	     <a class="btn btn-primary" href="/friend/{{friend.gpg_id}}/">Details</a>
+                        		<a class="btn btn-primary" href="/friend/{{friend.gpg_id}}/">Details</a>
+					{% if friend.relation < 2 %}
+						{# nothing self #}
+					{% elif friend.relation == 2 %} 
+                        			<a class="btn btn-primary" href="/friend/remove/{{friend.gpg_id}}/">Remove Friend</a>
+					{% else %} 
+                        			<a class="btn btn-primary" href="/friend/add/{{friend.gpg_id}}/">Make Friend</a>
+					{% endif %}
 				</td>
 				</tr>
 
@@ -49,6 +56,8 @@
 					{% if location.state == 2 %}
                         			<a class="btn btn-primary" href="/chat/friend/{{location.ssl_id}}/">Chat</a>
 					{% endif %}
+						<a class="btn btn-primary" href="/files/{{location.ssl_id}}/">Shared Files</a>
+
 					</td>
 					</tr>
 				{% endfor %}

@@ -215,9 +215,28 @@ class WebHarness:
 
     rp.set = peers_pb2.RequestPeers.LISTED;
     rp.info = peers_pb2.RequestPeers.ALLINFO;
-    rp.gpg_ids.append(peer_id);
+    rp.pgp_ids.append(peer_id);
 
     msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.PEERS, peers_pb2.MsgId_RequestPeers, False);
+
+    req_id = self.send_request(msg_id, rp)
+    return (req_id, msg_id)
+
+
+  def request_friend_add(self, peer_id, toadd):
+    logging.info("webharness.request_friend_add()")
+
+    # ignoring list_type for now.
+    rp = peers_pb2.RequestAddPeer();
+
+    if toadd:
+      rp.cmd = peers_pb2.RequestAddPeer.ADD;
+    else:
+      rp.cmd = peers_pb2.RequestAddPeer.REMOVE;
+
+    rp.pgp_id = peer_id;
+
+    msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.PEERS, peers_pb2.MsgId_RequestAddPeer, False);
 
     req_id = self.send_request(msg_id, rp)
     return (req_id, msg_id)
@@ -314,6 +333,18 @@ class WebHarness:
     rp.action = files_pb2.RequestControlDownload.ACTION_START
 
     msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.FILES, files_pb2.MsgId_RequestControlDownload, False);
+    req_id = self.send_request(msg_id, rp)
+    return (req_id, msg_id)
+
+
+  def request_dirlisting(self, peer_id, path):
+    logging.info("webharness.request_dirlisting()")
+
+    rp = files_pb2.RequestShareDirList()
+    rp.ssl_id = peer_id;
+    rp.path = path;
+
+    msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.FILES, files_pb2.MsgId_RequestShareDirList, False);
     req_id = self.send_request(msg_id, rp)
     return (req_id, msg_id)
 

@@ -5,17 +5,17 @@ import django.core.handlers.wsgi
 from tornado import httpserver, ioloop, wsgi
 from tornado.web import Application, StaticFileHandler, FallbackHandler
 
-# setup path.
-app_dir = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(os.path.dirname(app_dir))
+import djrs_path
+#from djrs_path import app_dir
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'djrs.settings'
 
 # explicit dependencies for django + app.
 import djrs_deps
-
  
 def runserver():
-    static_path = os.path.join(app_dir, 'static')
+    #static_path = os.path.join(app_dir, 'static')
+    static_path = os.path.join('.', 'static')
  
     wsgi_app = wsgi.WSGIContainer(django.core.handlers.wsgi.WSGIHandler())
     tornado_app = Application([

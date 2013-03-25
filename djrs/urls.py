@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     url(r'^friends/$', 'djrs.views.friends', name='djrs_friends'),
     url(r'^friends/(?P<list_type>\w+)/$', 'djrs.views.friends', name='djrs_friends'),
     url(r'^friend/(?P<friend_id>\w+)/$', 'djrs.views.friend_details', name='djrs_friend_details'),
+    url(r'^friend/add/(?P<friend_id>\w+)/$', 'djrs.views.friend_add', name='djrs_friend_add'),
+    url(r'^friend/remove/(?P<friend_id>\w+)/$', 'djrs.views.friend_remove', name='djrs_friend_remove'),
 
     url(r'^apps/$', 'djrs.views.apps', name='djrs_apps'),
     url(r'^about/$', 'djrs.views.about', name='djrs_about'),
@@ -29,4 +31,8 @@ urlpatterns = patterns('',
     url(r'^searches/$', 'djrs.views.searches', name='djrs_searches'),
     url(r'^search/(?P<search_id>\d+)/$', 'djrs.views.search_details', name='djrs_search_details'),
     url(r'^search/(?P<search_id>\d+)/close/$', 'djrs.views.search_close', name='djrs_search_close'),
+
+    url(r'^files/$', 'djrs.views.file_listing', name='djrs_file_listing_base'),
+    url(r'^files/(?P<peer_id>\w+)/$', 'djrs.views.file_listing', name='djrs_file_listing_peer'),
+    url(r'^files/(?P<peer_id>\w+)/(?P<path>.+)/$', 'djrs.views.file_listing', name='djrs_file_listing_full'),
 )

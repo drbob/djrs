@@ -23,5 +23,9 @@
 		<a class="btn btn-primary btn-large" href="/searches/">Search</a>
 		<p>Find Stuff</p>
 	</div><!--/row-->
+	<div class="row-fluid">
+		<a class="btn btn-primary btn-large" href="/files/">File Listings</a>
+		<p>Browse</p>
+	</div><!--/row-->
 </div><!--/span-->
 {% endblock content %}

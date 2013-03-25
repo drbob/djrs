@@ -1,0 +1,40 @@
+{% extends "base_sidebar.dtml" %}
+
+{% block content %}
+<div class="span9">
+	<div class="row-fluid">
+		<div class="span9">
+			<h2> Files for Peer {{ file_listing.ssl_id }} at Path {{ file_listing.path }} </h2>
+			<div>
+				<table>
+				<thead>
+				<th> Name </th>
+				<th> Hash </th>
+				<th> Size </th>
+				<th> Actions </th>
+				</thead>
+
+				<tbody>
+			{% for file in file_listing.files %}
+				<tr>
+				<td> {{file.name}} </td>
+				<td> {{file.hash}} </td>
+				<td> {{file.size}} </td>
+				<td> 
+					{% if not file.hash %}
+						{% if file_listing.path %}
+                        				<a class="btn btn-primary" href="/files/{{file_listing.ssl_id}}/{{ file_listing.path }}/{{file.name}}/">View Subdirectory</a>
+						{% else %}
+                        				<a class="btn btn-primary" href="/files/{{file_listing.ssl_id}}/{{file.name}}/">View Subdirectory</a>
+						{% endif %}
+					{% endif %}
+				</tr>
+			{% endfor %}
+				</tbody>
+				</table>
+			</div>
+		</div><!--/span-->
+	</div><!--/row-->
+</div><!--/span-->
+{% endblock content %}
+
