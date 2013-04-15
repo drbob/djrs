@@ -11,18 +11,18 @@
 			{% if lobby_list %}
 				<h2> Chat Lobbies </h2>
 				<div>
-					<table>
+					<table class="table table-striped table-condensed">
 					<thead>
 					<th> Lobby </th>
-					<th> Lobby ID </th>
+					{# <th> Lobby ID </th> #}
 					<th> Topic </th>
 					<th> Nickname </th>
 					<th> Privacy </th>
 					<th> State </th>
 					<th> No Peers </th>
-					<th> LastReportTime</th>
-					<th> LastActivity </th>
-					<th> FriendsHere </th>
+					{# <th> LastReportTime</th> #}
+					{# <th> LastActivity </th>  #}
+					<th> Friends Here </th>
 					<th> Actions </th>
 					</thead>
 					<tbody>
@@ -30,25 +30,42 @@
 				<h2> No Chat Lobbies Available </h2>
 			{% endif %}
 			{% for lobby in lobby_list %}
-					<tr>
+					{% if lobby.lobby_state == 1 %}
+						<tr class="info">
+					{% else %}
+						<tr>
+					{% endif %}
+
 					<td> {{lobby.lobby_name}} 	</td>
-					<td> {{lobby.lobby_id}} 	</td>
+					{# <td> {{lobby.lobby_id}} 	</td> #}
 					<td> {{lobby.lobby_topic}} 	</td>
 					<td> {{lobby.lobby_nickname}} 	</td>
-					<td> {{lobby.privacy_level}} 	</td>
-					<td> {{lobby.lobby_state}} 	</td>
+					{# <td> {{lobby.privacy_level}} 	</td> #}
+					{# <td> {{lobby.lobby_state}} 	</td> #}
+					<td> {{lobby.privacy_text}} 	</td>
+					<td> {{lobby.status_text}} 	</td>
 					<td> {{lobby.no_peers}} 	</td>
-					<td> {{lobby.last_report_time}} 	</td>
-					<td> {{lobby.last_activity}} 	</td>
+					{# <td> {{lobby.last_report_time}} 	</td> #}
+					{# <td> {{lobby.last_activity}} 	</td> #}
 					<td>
 						{% for friend in lobby.participating_friends %}
 							{{friend}} 
 						{% endfor %} 
 				 	</td>
 					<td>
-                                		<a class="btn" href="/lobby/{{lobby.lobby_id}}/join/">Join</a>
-                                		<a class="btn" href="/lobby/{{lobby.lobby_id}}/">Chat</a>
-                                		<a class="btn" href="/lobby/{{lobby.lobby_id}}/drop/">Drop</a>
+						{% if lobby.lobby_state == 1 %}
+							<div class="btn-group">
+	                                			<a class="btn disabled" href="/lobby/{{lobby.lobby_id}}/join/">Join</a>
+	                                			<a class="btn" href="/lobby/{{lobby.lobby_id}}/">Chat</a>
+	                                			<a class="btn" href="/lobby/{{lobby.lobby_id}}/drop/">Drop</a>
+							</div>
+						{% else %}
+							<div class="btn-group">
+	                                			<a class="btn" href="/lobby/{{lobby.lobby_id}}/join/">Join</a>
+	                                			<a class="btn disabled" href="/lobby/{{lobby.lobby_id}}/">Chat</a>
+	                                			<a class="btn disabled" href="/lobby/{{lobby.lobby_id}}/drop/">Drop</a>
+							</div>
+						{% endif %}
 				 	</td>
 					</tr>
 			{% endfor %}

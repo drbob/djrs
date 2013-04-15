@@ -8,34 +8,39 @@
 
         {# Transfer Details #}
 	<div class="row-fluid">
-		<div class="span9">
-			{% if upload_list %}
-				<h2> Uploads </h2>
+		<div class="span12">
+			{% if download_list %}
+				<h4> Downloads </h4>
 				<div>
-					<table>
+					<table class="table table-striped table-condensed">
 					<thead>
 					<th> name </th>
-					<th> hash </th>
+					{# <th> hash </th> #}
 					<th> size </th>
-					<th> fraction(0=>1)</th>
+					<th> state </th>
 					<th> rate(kB/s) </th>
 					<th> actions </th>
 					</thead>
 					<tbody>
 			{% else %}
-				<h2> No Uploads </h2>
+				<h4> No Downloads </h4>
 			{% endif %}
-			{% for upload in upload_list %}
+			{% for download in download_list %}
 					<tr>
-					<td> {{upload.file.name}} </td>
-					<td> {{upload.file.hash}} </td>
-					<td> {{upload.file.size}} </td>
-					<td> {{upload.fraction|floatformat:2}} </td>
-					<td> {{upload.rate_kBs|floatformat:2}} </td>
-					<td> </td>
+					<td> {{download.file.name}} </td>
+					{# <td> {{download.file.hash}} </td> #}
+					{#<td> {{download.file.size}} </td> #}
+					{#<td> {{download.fraction|floatformat:2}} </td> #}
+					<td> {{download.size_txt}} </td> 
+					<td> {{download.percentage_done}} </td> 
+					<td> {{download.rate_kBs|floatformat:2}} </td>
+					<td> 
+						{# Buttons don't work yet! #}
+						<a class="btn" href="/transfer/{{download.file.hash}}/pause/">Pause</a> 
+						<a class="btn" href="/transfer/{{download.file.hash}}/start/">Go</a> </td> 
 					</tr>
 			{% endfor %}
-			{% if upload_list %}
+			{% if download_list %}
 					</tbody>
 					</table>
 				</div>
@@ -43,37 +48,32 @@
 		</div><!--/span-->
 	</div><!--/row-->
 	<div class="row-fluid">
-		<div class="span9">
-			{% if download_list %}
-				<h2> Downloads </h2>
+		<div class="span12">
+			{% if upload_list %}
+				<h4> Uploads </h4>
 				<div>
-					<table>
+					<table class="table table-striped table-condensed">
 					<thead>
 					<th> name </th>
-					<th> hash </th>
 					<th> size </th>
-					<th> fraction(0=>1)</th>
+					<th> state</th>
 					<th> rate(kB/s) </th>
 					<th> actions </th>
 					</thead>
 					<tbody>
 			{% else %}
-				<h2> No Downloads </h2>
+				<h4> No Uploads </h4>
 			{% endif %}
-			{% for download in download_list %}
+			{% for upload in upload_list %}
 					<tr>
-					<td> {{download.file.name}} </td>
-					<td> {{download.file.hash}} </td>
-					<td> {{download.file.size}} </td>
-					<td> {{download.fraction|floatformat:2}} </td>
-					<td> {{download.rate_kBs|floatformat:2}} </td>
-					<td> 
-						{# Buttons don't work yet! #}
-						{# <a class="btn" href="/transfer/{{download.file.hash}}/pause/">Pause</a> #}
-						{# <a class="btn" href="/transfer/{{download.file.hash}}/start/">Go</a> </td> #}
+					<td> {{upload.file.name}} </td>
+					<td> {{upload.size_txt}} </td> 
+					<td> {{upload.percentage_done}} </td> 
+					<td> {{upload.rate_kBs|floatformat:2}} </td>
+					<td> </td>
 					</tr>
 			{% endfor %}
-			{% if download_list %}
+			{% if upload_list %}
 					</tbody>
 					</table>
 				</div>

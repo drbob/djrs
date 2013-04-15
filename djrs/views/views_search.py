@@ -14,6 +14,9 @@ from djrs.forms import SearchForm
 import rs_logging as logging
 from webrs.harness import getWebHarness
 
+from protobuf_to_dict import protobuf_to_dict
+from webrs.templatize import search_searchlist
+
 def searches(request):
     logging.info("djrs.view.searches")
 
@@ -65,7 +68,8 @@ def searches(request):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['search_list'] = resp_msg.searches
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['search_list'] = search_searchlist(dict_msg['searches'])
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
@@ -86,7 +90,9 @@ def search_details(request, search_id):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['search_list'] = resp_msg.searches
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['search_list'] = search_searchlist(dict_msg['searches'])
+
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))

@@ -11,6 +11,10 @@ from django.core.urlresolvers import reverse
 import rs_logging as logging
 from webrs.harness import getWebHarness
 
+from protobuf_to_dict import protobuf_to_dict
+from webrs.templatize import files_transferlist
+
+
 def transfers(request):
     logging.info("djrs.view.transfers")
 
@@ -24,7 +28,8 @@ def transfers(request):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['upload_list'] = resp_msg.transfers
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['upload_list'] = files_transferlist(dict_msg['transfers'])
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
@@ -34,7 +39,9 @@ def transfers(request):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['download_list'] = resp_msg.transfers
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['download_list'] = files_transferlist(dict_msg['transfers'])
+
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))

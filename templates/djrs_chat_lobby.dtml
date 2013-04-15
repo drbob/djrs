@@ -17,30 +17,23 @@
 			<h2>Lobby: {{lobby_details.lobby_name}} </h2>
 
 			<div>
-				<table>
+				<table class="table table-striped table-condensed">
 				<thead>
-				<th> Lobby ID </th>
 				<th> Topic </th>
 				<th> Nickname </th>
 				<th> Privacy </th>
 				<th> State </th>
 				<th> No Peers </th>
-				<th> LastReportTime</th>
-				<th> LastActivity </th>
-				<th> FriendsHere </th>
-				<th> Actions </th>
+				<th> Friends Here </th>
 				</thead>
 
 				<tbody>
 				<tr>
-				<td> {{lobby_details.lobby_id}} 	</td>
 				<td> {{lobby_details.lobby_topic}} 	</td>
 				<td> {{lobby_details.lobby_nickname}} 	</td>
-				<td> {{lobby_details.privacy_level}} 	</td>
-				<td> {{lobby_details.lobby_state}} 	</td>
+				<td> {{lobby_details.privacy_text}} 	</td>
+				<td> {{lobby_details.status_text}} 	</td>
 				<td> {{lobby_details.no_peers}} 	</td>
-				<td> {{lobby_details.last_report_time}} 	</td>
-				<td> {{lobby_details.last_activity}} 	</td>
 				<td>
 				{% for friend in lobby_details.participating_friends %}
 					{{friend}} 

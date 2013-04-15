@@ -3,62 +3,72 @@
 {% block content %}
 <div class="span9">
 	<div class="row-fluid">
-		<div class="span9">
+		<div class="span12">
 			<h2> Friends </h2>
 			<div>
-				<table>
+				<table class="table table-striped table-condensed">
 				<thead>
 				<th> Name </th>
-				{# <th> PGP ID </th> #}
 				<th> Relation </th>
 				<th> Location </th>
-				{# <th> SSL ID </th> #}
-				<th> Extern Addr </th>
-				<th> Local Addr </th>
 				<th> State </th>
-				<th> actions </th>
+				<th></th>
+				<th></th>
 				</thead>
 
 				<tbody>
 			{% for friend in friend_list %}
-				<tr>
+                                {% if friend.locations %}
+					<tr>
+				{% else %}
+					{% if friend.relation < 2 %}
+						<tr class="success">
+					{% elif friend.relation == 2 %} 
+						<tr class="warning">
+					{% else %} 
+						<tr class="error">
+					{% endif %}
+				{% endif %}
+
 				<td> {{friend.name}} </td>
-				{# <td> {{friend.gpg_id}} </td> #}
-				<td> {{friend.relation}} </td>
-				{# <td></td> #}
-				<td></td>
-				<td></td>
-				<td></td>
+				<td> {{friend.relationship}} </td>
+                                {% if friend.locations %}
+					<td></td>
+					<td></td>
+				{% else %}
+					<td>Unknown</td>
+					<td>Unreachable</td>
+				{% endif %}
 				<td></td>
 				<td> 
-                        		<a class="btn btn-primary" href="/friend/{{friend.gpg_id}}/">Details</a>
-					{% if friend.relation < 2 %}
-						{# nothing self #}
-					{% elif friend.relation == 2 %} 
-                        			<a class="btn btn-primary" href="/friend/remove/{{friend.gpg_id}}/">Remove Friend</a>
-					{% else %} 
-                        			<a class="btn btn-primary" href="/friend/add/{{friend.gpg_id}}/">Make Friend</a>
-					{% endif %}
+					<div class="btn-group">
+	                        		<a class="btn" href="/friend/{{friend.gpg_id}}/">Details</a>
+						{% if friend.relation < 2 %}
+							{# nothing self #}
+						{% elif friend.relation == 2 %} 
+	                        			<a class="btn btn-warning" href="/friend/remove/{{friend.gpg_id}}/">Remove Friend</a>
+						{% else %} 
+	                        			<a class="btn btn-danger" href="/friend/add/{{friend.gpg_id}}/">Make Friend</a>
+						{% endif %}
+					</div>
 				</td>
 				</tr>
 
 				{% for location in friend.locations %}
-					<tr>
+					<tr class="info">
 					<td></td>
-					{# <td></td> #}
 					<td></td>
 					<td> {{location.location}} </td>
-					{# <td> {{location.ssl_id}} </td> #}
-					<td> {{location.extaddr.addr}}:{{location.extaddr.port}} </td>
-					<td> {{location.localaddr.addr}}:{{location.localaddr.port}} </td>
-					<td> {{location.state}} </td>
+					<td> {{location.status}} </td>
 					<td>
-					{% if location.state == 2 %}
-                        			<a class="btn btn-primary" href="/chat/friend/{{location.ssl_id}}/">Chat</a>
-					{% endif %}
-						<a class="btn btn-primary" href="/files/{{location.ssl_id}}/">Shared Files</a>
-
+					<div class="btn-group">
+						{% if location.state == 2 %}
+	                        			<a class="btn" href="/chat/friend/{{location.ssl_id}}/">Chat</a>
+						{% endif %}
+							<a class="btn" href="/files/{{location.ssl_id}}/">Shared Files</a>
+					</div>
 					</td>
+					<td></td>
 					</tr>
 				{% endfor %}
 			{% endfor %}

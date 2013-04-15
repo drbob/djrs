@@ -9,7 +9,11 @@ from django.core.urlresolvers import reverse
 
 # Libs.
 import rs_logging as logging
+from protobuf_to_dict import protobuf_to_dict
 from webrs.harness import getWebHarness
+
+from webrs.templatize import core_personlist
+
 
 def friends(request, list_type='friends'):
     logging.info("djrs.view.friends")
@@ -29,7 +33,8 @@ def friends(request, list_type='friends'):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['friend_list'] = resp_msg.peers
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['friend_list'] = core_personlist(dict_msg['peers'])
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
@@ -58,7 +63,9 @@ def friend_details(request, friend_id):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['friend_list'] = resp_msg.peers
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['friend_list'] = core_personlist(dict_msg['peers'])
+
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))

@@ -15,6 +15,9 @@ import rs_logging as logging
 from webrs.harness import getWebHarness
 from pyrs.proto import chat_pb2
 
+from protobuf_to_dict import protobuf_to_dict
+from webrs.templatize import chat_chathistory
+
 def chat(request):
     logging.info("djrs.view.chat")
 
@@ -124,7 +127,8 @@ def chat_lobby(request, lobby_id):
     #    resp = harness.specific_response(req_id)
     #    if resp:
     #        (resp_id, resp_msg) = resp
-    #        template_vars['lobby_messages'] = resp_msg.lobbies
+    #        dict_msg = protobuf_to_dict(resp_msg)
+    #        template_vars['messages'] = chat_chathistory(dict_msg['msgs'])
     #
     #except Exception, e:
     #    logging.info("Unexpected Exception: %s" % (e))
@@ -171,8 +175,9 @@ def chat_friend(request, peer_id):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['messages'] = resp_msg.msgs
-    
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['messages'] = chat_chathistory(dict_msg['msgs'])
+
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
 

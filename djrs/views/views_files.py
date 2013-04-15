@@ -11,6 +11,9 @@ from django.core.urlresolvers import reverse
 import rs_logging as logging
 from webrs.harness import getWebHarness
 
+from protobuf_to_dict import protobuf_to_dict
+from webrs.templatize import files_sharedirlist
+
 def file_listing(request, peer_id='', path=''):
     logging.info("djrs.view.file_listing() peer_id: %s, path: %s " % (peer_id, path))
 
@@ -28,7 +31,8 @@ def file_listing(request, peer_id='', path=''):
         resp = harness.specific_response(req_id)
         if resp:
             (resp_id, resp_msg) = resp
-            template_vars['file_listing'] = resp_msg
+            dict_msg = protobuf_to_dict(resp_msg)
+            template_vars['file_listing'] = files_sharedirlist(dict_msg)
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
