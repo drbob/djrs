@@ -49,6 +49,9 @@ def login(request):
                 # success! -> save session as active.
                 harness.set_session(request.session.session_key)
 
+                # setup 
+                harness.setup_connection()
+
                 return HttpResponseRedirect(reverse('djrs_home'))
 
             except paramiko.SSHException, e:
@@ -74,6 +77,24 @@ def about(request):
 
 def busy(request):
     return render_to_response('djrs_busy.dtml', {}, context_instance=RequestContext(request))
+
+
+def refresh(request):
+    # parse the extra arguments for the full download details.
+    url = request.GET.get('url', None)
+    timeout = request.GET.get('timeout', None)
+    count = request.GET.get('count', None)
+
+    return HttpResponseRedirect(url)
+
+
+def refresh_enable(request):
+    request.session['refresh_mode'] = 'on'
+    return HttpResponseRedirect(reverse('djrs_home'))
+
+def refresh_disable(request):
+    request.session['refresh_mode'] = 'off'
+    return HttpResponseRedirect(reverse('djrs_home'))
 
 
 

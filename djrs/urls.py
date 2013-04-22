@@ -5,6 +5,11 @@ urlpatterns = patterns('',
     url(r'^$', 'djrs.views.home', name='djrs_home'),
     url(r'^login/$', 'djrs.views.login', name='djrs_login'),
     url(r'^busy/$', 'djrs.views.busy', name='djrs_busy'),
+
+    url(r'^refresh/$', 'djrs.views.refresh', name='djrs_refresh'),
+    url(r'^refresh/enable/$', 'djrs.views.refresh_enable', name='djrs_refresh_enable'),
+    url(r'^refresh/disable/$', 'djrs.views.refresh_disable', name='djrs_refresh_disable'),
+
     url(r'^friends/$', 'djrs.views.friends', name='djrs_friends'),
     url(r'^friends/(?P<list_type>\w+)/$', 'djrs.views.friends', name='djrs_friends'),
     url(r'^friend/(?P<friend_id>\w+)/$', 'djrs.views.friend_details', name='djrs_friend_details'),

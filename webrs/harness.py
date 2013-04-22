@@ -72,8 +72,12 @@ class WebHarness:
   def reset(self):
     self._connected = False
     self.event_id_chat = None
+    self._setup = False
     self._active_session = None
     self._active_session_ts = datetime.datetime.min
+
+  def is_setup(self):
+    return self._setup
 
   def is_connected(self):
     return self._connected
@@ -136,6 +140,23 @@ class WebHarness:
       time.sleep(0.1);
       now = datetime.datetime.now();
 
+  ######################################################################################
+  ######################################################################################
+  # Once only functions that you run.
+
+  def setup_connection(self):
+    logging.info("webharness.setup()")
+    if self.is_setup():
+      logging.info("webharness.setup() Already Setup")
+      return
+
+    logging.info("webharness.setup() Running setup")
+    (req_id, msg_id) = self.request_register_chat_events()
+    (resp_msg_id, resp) = self.specific_response(req_id)
+
+    logging.info("webharness.setup() Setup Done")
+    self._setup = True
+
 
   ######################################################################################
   ######################################################################################
@@ -169,6 +190,22 @@ class WebHarness:
         return (msg_id, resp)
     return None
 
+  ######################################################################################
+  ######################################################################################
+
+  def request_register_chat_events(self):
+    logging.info("webharness.request_register_chat_events()")
+
+    rp = chat_pb2.RequestRegisterEvents(); 
+    rp.action = chat_pb2.RequestRegisterEvents.REGISTER
+
+    msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.CHAT, chat_pb2.MsgId_RequestRegisterEvents, False);
+    req_id = self.send_request(msg_id, rp)
+
+    # slightly different... remember this parameter,
+    self.event_id_chat = req_id
+    return (req_id, msg_id)
+
   def get_event_chats(self):
     logging.info("webharness.get_event_chats()")
     if self.event_id_chat:
@@ -177,6 +214,7 @@ class WebHarness:
 
   def get_event_id_chat(self):
     return self.event_id_chat
+
 
   ######################################################################################
   ######################################################################################
@@ -253,10 +291,6 @@ class WebHarness:
 
     req_id = self.send_request(msg_id, rp)
     return (req_id, msg_id)
-
-
-
-
 
 
   ######################################################################################
@@ -360,20 +394,6 @@ class WebHarness:
 
     msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.CHAT, chat_pb2.MsgId_RequestChatLobbies, False);
     req_id = self.send_request(msg_id, rp)
-    return (req_id, msg_id)
-
-
-  def request_register_chat_lobby(self, list_type):
-    logging.info("webharness.request_register_chat_lobby()")
-
-    rp = chat_pb2.RequestChatLobbies();
-    rp.lobby_set = chat_pb2.RequestChatLobbies.LOBBYSET_ALL;
-
-    msg_id = pyrs.msgs.constructMsgId(core_pb2.CORE, core_pb2.CHAT, chat_pb2.MsgId_RequestRegisterEvents, False);
-    req_id = rs.send_request(msg_id, rp)
-
-    # slightly different... remember this parameter,
-    self.event_id_chat = req_id
     return (req_id, msg_id)
 
   def request_set_chat_nickname(self, nickname):

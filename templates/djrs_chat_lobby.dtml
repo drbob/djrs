@@ -3,8 +3,6 @@
 {% block content %}
 <div class="span9">
 
-	<a class="btn btn-primary" href="/lobby/{{lobby_id}}/">Refresh</a>
-
 	<div class="row-fluid">
 		<h2>Lobby Chat </h2>
 		<p> Lobby Chat is not working properly, yet</p>

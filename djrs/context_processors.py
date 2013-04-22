@@ -6,7 +6,7 @@ from webrs.harness import getWebHarness, WebHarness
 import rs_logging as logging
 
 def pyrs_status(request):
-    "Returns context variables helpful for debugging."
+    "Returns context variables for basic status."
 
     context_extras = {}
     if 'offline' == request.session.get('djrs','offline'):
@@ -52,6 +52,33 @@ def pyrs_status(request):
     # 
 
     context_extras['pyrs_status'] = pyrs_status
+    return context_extras
+
+
+def djrs_refresh(request):
+    "Returns refresh data"
+
+    context_extras = {}
+    if 'offline' == request.session.get('djrs','offline'):
+        return context_extras
+
+    #############################################################
+    # Handle refresh parameters.
+    is_refresh = request.GET.get('refresh', None)
+    if is_refresh is not None:
+        count = request.session.get('count','0')
+    	request.session['count'] = count + 1
+    else:
+    	request.session['count'] = 0
+ 
+    djrs_refresh = {
+	'active' : ('on' == request.session.get('refresh_mode','off')), 
+    	'timeout': request.session.get('timeout','30'),
+        'count'  : request.session.get('count','0'),
+        'url'    : request.path,
+    }
+
+    context_extras['djrs_refresh'] = djrs_refresh
     return context_extras
 
 

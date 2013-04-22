@@ -6,6 +6,18 @@
 {% block sidebar-nav %}
 	{# Top Of List: Basic Status, from ContextProcessor #}
 	<ul class="nav nav-list">
+		{% if djrs_refresh.active %}
+			<li class="nav-header">Refresh Active</li>
+			<li id="timer">Countdown: {{djrs_refresh.timeout}}</li>
+			<li>Count: {{djrs_refresh.count}}</li> 
+			<li>Url: {{djrs_refresh.url}}</li> 
+			<li><a href="/refresh/disable/">Disable Refresh</a></li>
+		{% else %}
+			<li class="nav-header">Refresh Disabled</li>
+			<li><a href="/refresh/enable/">Enable Refresh</a></li>
+		{% endif %}
+			<li><a href="{{djrs_refresh.url}}">Instant Refresh</a></li>
+
 		{# status #}
 		{% if pyrs_status.connected %}
 			<li class="nav-header">Connected</li>
@@ -44,3 +56,14 @@
 	</div>
 </div><!--/span-->
 {% endblock content %}
+
+{% block extrascripts %}
+	{% if djrs_refresh.active %}
+		<script type="text/javascript">
+			var timeoutPeriod = {{djrs_refresh.timeout}};
+			var count = {{djrs_refresh.count}};
+			var url = '{{djrs_refresh.url}}';
+		</script>
+		<script src="{{ STATIC_URL }}js/djrs.js"></script>
+	{% endif %}
+{% endblock %}

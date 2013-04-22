@@ -145,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "djrs.context_processors.pyrs_status",
+    "djrs.context_processors.djrs_refresh",
 )
 
 
