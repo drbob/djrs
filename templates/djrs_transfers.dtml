@@ -34,9 +34,11 @@
 					<td> {{download.percentage_done}} </td> 
 					<td> {{download.rate_kBs|floatformat:2}} </td>
 					<td> 
+					<div class="btn-group">
 						{# Buttons don't work yet! #}
 						<a class="btn" href="/transfer/{{download.file.hash}}/pause/">Pause</a> 
 						<a class="btn" href="/transfer/{{download.file.hash}}/start/">Go</a> </td> 
+					</div>
 					</tr>
 			{% endfor %}
 			{% if download_list %}

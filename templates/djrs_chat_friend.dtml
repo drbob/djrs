@@ -27,7 +27,7 @@
 				{% if forloop.first %}
 
 					{% if forloop.revcounter >= 10 %}
-                        			<div id="chat-all" class="collapse in">
+                        			<div id="chat-all" class="collapse">
 						<h4> Older Chat </h4>
 					{% else %}
 						<h4> Latest Chat </h4>
