@@ -9,8 +9,8 @@ Development Setup
 
 check out the code:
 
-    git clone git://github.com/drbob/djrs.git djrs
-    cd djrs
+    git clone git://github.com/drbob/djrs.git djrs-code
+    cd djrs-code
     git submodule update --init
 
 
@@ -29,10 +29,34 @@ Launch the development server
 
     python manage.py runserver
 
-Then point your browser at 127.0.0.0:8000
+Then point your browser at http://127.0.0.0:8000/
 
 Finally, you have to launch retroshare-nogui in SSH mode.
-This is documented else where (or will be soon).
+For instructions about how to do this, see out blog: http://retroshareteam.wordpress.com/2013/01/27/using-retroshare-on-the-excito-bubba3/  there are RPC notes towards the bottom of the page.
+
+There are also notes in Retroshare source code: retroshare-nogui/src/retroshare-nogui.pro
+
+
+Running via Tornado server.
+=============================
+
+This should be as simple as running
+
+    python djrs_server.py
+
+Then point your browser at http://127.0.0.0:8000/
+
+
+Building into a Standalone App 
+=============================
+
+Once you have got the standalone app running, you can *try*
+and build the standalone app. This is still work-in-progress.
+It has been successfully done a couple of times.
+
+Let us know if it works for you.
+
+    python cxfreeze_setup.py build
 
 
 Running As Production Web Interface.
@@ -54,12 +78,14 @@ Launch the fastcgi python interface via the ./run.sh script.
 Notes
 ==========
 
-This is in early development, and not recommended for Internet facing sites yet.
-It currently must be run in a "single user" mode
+The recommended method is to setup your rs-nogui node with an forwarded SSH port on your raspberry-PI or dreamplug.
+Then run the web app on any other computers when you want to access you node.
 
 The DjRS webserver and Retroshare nodes do not have to 
 be on the same computer, BUT you need to know the IP Address of 
 the Retroshare Node in order to login!
+
+DjRS is still in early development, and it is not recommended to expose the Web Interface directly to the Internet yet.
 
 
 

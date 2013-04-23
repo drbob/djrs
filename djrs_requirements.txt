@@ -1,4 +1,4 @@
-django==1.4
+django==1.4.5
 paramiko
 flup
 protobuf==2.4.1
