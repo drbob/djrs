@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 
 # Libs.
 import rs_logging as logging
-from webrs.harness import getWebHarness
+from webrs.harness import getWebHarnessGroup
 
 class DjRsAuthMiddleware(object):
     """
@@ -28,36 +28,37 @@ class DjRsAuthMiddleware(object):
             logging.warning("DjRsAuthMiddleware::process_request() Going to Busy Anyway")
             return None
 
-        harness = getWebHarness()
-        request.session.modified = True
-        session_key = request.session.session_key
-        active_session = harness.active_session()
-
-        logging.warning("DjRsAuthMiddleware::process_request() active_session: %s" % active_session)
-        logging.warning("DjRsAuthMiddleware::process_request() user_session: %s" % session_key)
-
-        if active_session:
-            if active_session == session_key:
-                logging.warning("DjRsAuthMiddleware::process_request() Session Active and OK")
-            else:
-                logging.warning("DjRsAuthMiddleware::process_request() Session Invalid => Busy View")
-                return HttpResponseRedirect(reverse('djrs_busy'))
-
-        # if webharness is connected, get session id.
-        if harness.is_connected() is False or not active_session:
-            logging.warning("DjRsAuthMiddleware::process_request() Not Connected or Active")
-
-            # if they are going to login -> let them through.
-            if request.path == reverse('djrs_login'):
-                logging.warning("DjRsAuthMiddleware::process_request() Going to Login Anyway")
-                return None
-               
-            logging.warning("DjRsAuthMiddleware::process_request() Redirect to login")
-            return HttpResponseRedirect(reverse('djrs_login'))
-
-        logging.warning("DjRsAuthMiddleware::process_request() Is Connected")
-        harness.keep_session_current()
-        request.session['djrs'] = 'online'
+        with getWebHarnessGroup(request) as harness:
+            #harness = getWebHarness()
+            request.session.modified = True
+            session_key = request.session.session_key
+            active_session = harness.active_session()
+    
+            logging.warning("DjRsAuthMiddleware::process_request() active_session: %s" % active_session)
+            logging.warning("DjRsAuthMiddleware::process_request() user_session: %s" % session_key)
+    
+            if active_session:
+                if active_session == session_key:
+                    logging.warning("DjRsAuthMiddleware::process_request() Session Active and OK")
+                else:
+                    logging.warning("DjRsAuthMiddleware::process_request() Session Invalid => Busy View")
+                    return HttpResponseRedirect(reverse('djrs_busy'))
+    
+            # if webharness is connected, get session id.
+            if harness.is_connected() is False or not active_session:
+                logging.warning("DjRsAuthMiddleware::process_request() Not Connected or Active")
+    
+                # if they are going to login -> let them through.
+                if request.path == reverse('djrs_login'):
+                    logging.warning("DjRsAuthMiddleware::process_request() Going to Login Anyway")
+                    return None
+                   
+                logging.warning("DjRsAuthMiddleware::process_request() Redirect to login")
+                return HttpResponseRedirect(reverse('djrs_login'))
+    
+            logging.warning("DjRsAuthMiddleware::process_request() Is Connected")
+            harness.keep_session_current()
+            request.session['djrs'] = 'online'
         return None
 
 

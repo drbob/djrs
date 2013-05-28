@@ -5,10 +5,6 @@
 # then waits for responses, prints them out and ensures 'success'
 # 
 
-
-
-
-
 import pyrs.comms
 import pyrs.rpc
 import pyrs.msgs
@@ -20,7 +16,7 @@ import pyrs.test.responders
 import time, datetime
 
 import rs_logging as logging
-
+import threading
 
 # all the msgs.
 from pyrs.proto import core_pb2
@@ -34,17 +30,92 @@ from pyrs.proto import files_pb2
 
 
 # The Web Harness has to handle the connections to RS in the background.
-# we maintain a single global of this class here....
+# we maintain a global dictionary of these, indexed by session key
 # it will periodically die, and need to be restarted.
+#
+# to use:
+#
+# with getWebHarnessGroup(request) as harness:
+#
+# this takes care of the locking... 
+# and harness is a WebHarness object - as before. 
+
+class WebHarnessGroup:
+    def __init__(self, key):
+        self.key = key
+        self.semaphore = threading.Semaphore()
+        self.harness = WebHarness()
+        logging.info("WebHarnessGroup(%s)" % self.key)
+
+    def acquire(self):
+        logging.info("WebHarnessGroup(%s).acquire()" % self.key)
+        self.semaphore.acquire()
+        logging.info("WebHarnessGroup(%s).acquire() Aquired Semaphore" % self.key)
+        return self.harness
+
+    def release(self):
+        logging.info("WebHarnessGroup(%s).release()" % self.key)
+        self.semaphore.release()
+
+    def old(self):
+        return False
+
+    # for controlled access.
+    def __enter__(self):
+        logging.info("WebHarnessGroup(%s).__enter__()" % self.key)
+        self.semaphore.acquire()
+        logging.info("WebHarnessGroup(%s).__enter__() Aquired Semaphore" % self.key)
+        return self.harness
+
+    def __exit__(self, type, value, traceback):
+        logging.info("WebHarnessGroup(%s).__exit__()" % self.key)
+        self.semaphore.release()
 
 
-__persistent_WebPyRs = None
 
-def getWebHarness():
-    global __persistent_WebPyRs
-    if __persistent_WebPyRs is None:
-        __persistent_WebPyRs = WebHarness()
-    return __persistent_WebPyRs
+
+__WebHarnessDict = {}
+__WebHarnessSemaphore = threading.Semaphore()
+
+def getWebHarnessGroup(request):
+    key = request.session.session_key
+    logging.info("getWebHarness(%s)" % key)
+
+    # if this object exists... try to grab it.
+    global __WebHarnessDict
+    global __WebHarnessSemaphore
+       
+    __WebHarnessSemaphore.acquire()
+
+    if key in __WebHarnessDict:
+        obj = __WebHarnessDict[key]
+    else:
+        # todo - limit count....
+        obj = WebHarnessGroup(key)
+        __WebHarnessDict[key] = obj
+
+    __WebHarnessSemaphore.release()
+    return obj
+
+
+
+
+def cleanupWebHarness():
+       
+    __WebHarnessSemaphore.acquire()
+
+    to_delete = []
+    for k, v in  __WebHarnessDict.iteritems():
+        if v.old():
+            to_delete.append(k)
+
+    for k in to_delete:
+        del __WebHarnessDict[k]
+
+    __WebHarnessSemaphore.release()
+
+
+
     
 
 class WebHarness:

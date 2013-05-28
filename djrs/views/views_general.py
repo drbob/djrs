@@ -14,15 +14,17 @@ from djrs.forms import LoginForm
 
 # Libs.
 import rs_logging as logging
-from webrs.harness import getWebHarness
+from webrs.harness import getWebHarnessGroup
 
 import paramiko
 
 def home(request):
     logging.info("djrs.view.home")
-    harness = getWebHarness()
-    if harness.is_connected() is False:
-        return HttpResponseRedirect(reverse('djrs_login'))
+
+    with getWebHarnessGroup(request) as harness:
+        if harness.is_connected() is False:
+            return HttpResponseRedirect(reverse('djrs_login'))
+
     return render_to_response('djrs_home.dtml', {}, context_instance=RequestContext(request))
 
 def login(request):
@@ -34,34 +36,34 @@ def login(request):
         if form.is_valid(): # All validation rules pass
             logging.info("Hello... we have a form")
 
-            harness = getWebHarness()
+            with getWebHarnessGroup(request) as harness:
 
-            # try to login.
-            # wait around until we are logged in.
-            user = form.cleaned_data['user']
-            pwd = form.cleaned_data['password']
-            host = form.cleaned_data['host']
-            port = form.cleaned_data['port']
-
-            try: 
-                harness.connect_params(user, pwd, host, port)
-
-                # success! -> save session as active.
-                harness.set_session(request.session.session_key)
-
-                # setup 
-                harness.setup_connection()
-
-                return HttpResponseRedirect(reverse('djrs_home'))
-
-            except paramiko.SSHException, e:
-                logging.info("Login Exception: %s" % (e))
-                error_msg = "Login Error: %s" % e
-            except Exception, e:
-                error_msg = "Unexpected Error: %s" % e
-                logging.info("Unexpected Exception: %s" % (e))
-            template_vars['error_message'] = error_msg
-
+                # try to login.
+                # wait around until we are logged in.
+                user = form.cleaned_data['user']
+                pwd = form.cleaned_data['password']
+                host = form.cleaned_data['host']
+                port = form.cleaned_data['port']
+    
+                try: 
+                    harness.connect_params(user, pwd, host, port)
+    
+                    # success! -> save session as active.
+                    harness.set_session(request.session.session_key)
+    
+                    # setup 
+                    harness.setup_connection()
+    
+                    return HttpResponseRedirect(reverse('djrs_home'))
+    
+                except paramiko.SSHException, e:
+                    logging.info("Login Exception: %s" % (e))
+                    error_msg = "Login Error: %s" % e
+                except Exception, e:
+                    error_msg = "Unexpected Error: %s" % e
+                    logging.info("Unexpected Exception: %s" % (e))
+                template_vars['error_message'] = error_msg
+    
     else:
         form = LoginForm() # An unbound form
 

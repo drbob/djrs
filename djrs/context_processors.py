@@ -2,7 +2,7 @@
 Context Processors to add standard RS status into the mix.
 """
 
-from webrs.harness import getWebHarness, WebHarness
+from webrs.harness import getWebHarnessGroup
 import rs_logging as logging
 
 def pyrs_status(request):
@@ -12,38 +12,38 @@ def pyrs_status(request):
     if 'offline' == request.session.get('djrs','offline'):
         return context_extras
 
-    web_harness = getWebHarness()
-
-    # default False...     
-    pyrs_status = {'connected':False}
-
-    if web_harness is None:
-        # major error - bail out.
-        context_extras['pyrs_status'] = pyrs_status
-        return context_extras
-
-    try:
-        # run requests (System Status)
-        (req_id, msg_id) = web_harness.request_system_status()
-        resp = web_harness.specific_response(req_id)
-        pyrs_status['connection'] = web_harness.connect_state()
-
-        if resp:
-            (resp_id, resp_msg) = resp
-
-            pyrs_status['connected'] = True
-
-            pyrs_status['no_peers'] = resp_msg.no_peers
-            pyrs_status['no_connected'] = resp_msg.no_connected
-            pyrs_status['upload_rate'] = resp_msg.bw_total.up
-            pyrs_status['download_rate'] = resp_msg.bw_total.down
-            pyrs_status['network_status'] = resp_msg.net_status  # This will need to be translated
-        else:
-            pyrs_status['connected'] = False
-    except Exception, e:
-        logging.info("djrs::context_processors.pyrs_status() Exception: %s" % e)
-        pass
-
+    with getWebHarnessGroup(request) as harness:
+    
+        # default False...     
+        pyrs_status = {'connected':False}
+    
+        if harness is None:
+            # major error - bail out.
+            context_extras['pyrs_status'] = pyrs_status
+            return context_extras
+    
+        try:
+            # run requests (System Status)
+            (req_id, msg_id) = harness.request_system_status()
+            resp = harness.specific_response(req_id)
+            pyrs_status['connection'] = harness.connect_state()
+    
+            if resp:
+                (resp_id, resp_msg) = resp
+    
+                pyrs_status['connected'] = True
+    
+                pyrs_status['no_peers'] = resp_msg.no_peers
+                pyrs_status['no_connected'] = resp_msg.no_connected
+                pyrs_status['upload_rate'] = resp_msg.bw_total.up
+                pyrs_status['download_rate'] = resp_msg.bw_total.down
+                pyrs_status['network_status'] = resp_msg.net_status  # This will need to be translated
+            else:
+                pyrs_status['connected'] = False
+        except Exception, e:
+            logging.info("djrs::context_processors.pyrs_status() Exception: %s" % e)
+            pass
+    
 
     # log into rs, via pyrs, and extract all the data.
 
