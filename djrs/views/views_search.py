@@ -69,7 +69,10 @@ def searches(request):
         if resp:
             (resp_id, resp_msg) = resp
             dict_msg = protobuf_to_dict(resp_msg)
-            template_vars['search_list'] = search_searchlist(dict_msg['searches'])
+            # If array is empty, entry does not appear at all
+            if 'searches' in dict_msg:
+                template_vars['search_list'] = \
+                        search_searchlist(dict_msg['searches'])
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
@@ -91,7 +94,8 @@ def search_details(request, search_id):
         if resp:
             (resp_id, resp_msg) = resp
             dict_msg = protobuf_to_dict(resp_msg)
-            template_vars['search_list'] = search_searchlist(dict_msg['searches'])
+            if 'searches' in dict_msg:
+                template_vars['search_list'] = search_searchlist(dict_msg['searches'])
 
 
     except Exception, e:
