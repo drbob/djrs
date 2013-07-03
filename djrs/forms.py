@@ -69,10 +69,10 @@ class BootstrapErrorList(ErrorList):
 ####### Real Forms are here #########
 
 class LoginForm(BootstrapForm):
-    user = forms.CharField(max_length=20, initial='user')
-    password = forms.CharField(max_length=20, widget=forms.PasswordInput)
+    user = forms.CharField(initial='user')
+    password = forms.CharField(widget=forms.PasswordInput)
     host = forms.IPAddressField(initial='127.0.0.1')  # could be ipv4 for the moment.
-    port = forms.IntegerField(min_value=1001, max_value=65535, initial=7022)
+    port = forms.IntegerField(min_value=0, max_value=65535, initial=7022)
 
 LoginForm=partial(LoginForm, error_class=BootstrapErrorList)
 
