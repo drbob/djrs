@@ -29,7 +29,7 @@ Launch the development server
 
     python manage.py runserver
 
-Then point your browser at http://127.0.0.0:8000/
+Then point your browser at http://127.0.0.1:8000/
 
 Finally, you have to launch retroshare-nogui in SSH mode.
 For instructions about how to do this, see out blog: http://retroshareteam.wordpress.com/2013/01/27/using-retroshare-on-the-excito-bubba3/  there are RPC notes towards the bottom of the page.
@@ -44,13 +44,15 @@ This should be as simple as running
 
     python djrs_server.py
 
-Then point your browser at http://127.0.0.0:8000/
+Then point your browser at http://127.0.0.1:8000/
+
+This is the recommended way of running DjRS!
 
 
 Building into a Standalone App 
 =============================
 
-Once you have got the standalone app running, you can *try*
+Once you have got the tornado server running, you can *try*
 and build the standalone app. This is still work-in-progress.
 It has been successfully done a couple of times.
 
