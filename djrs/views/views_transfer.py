@@ -29,7 +29,9 @@ def transfers(request):
         if resp:
             (resp_id, resp_msg) = resp
             dict_msg = protobuf_to_dict(resp_msg)
-            template_vars['upload_list'] = files_transferlist(dict_msg['transfers'])
+            if 'transfers' in dict_msg:
+                template_vars['upload_list'] = \
+                        files_transferlist(dict_msg['transfers'])
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
@@ -40,7 +42,9 @@ def transfers(request):
         if resp:
             (resp_id, resp_msg) = resp
             dict_msg = protobuf_to_dict(resp_msg)
-            template_vars['download_list'] = files_transferlist(dict_msg['transfers'])
+            if 'transfers' in dict_msg:
+                template_vars['download_list'] = \
+                        files_transferlist(dict_msg['transfers'])
 
 
     except Exception, e:

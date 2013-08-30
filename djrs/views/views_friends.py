@@ -34,7 +34,8 @@ def friends(request, list_type='friends'):
         if resp:
             (resp_id, resp_msg) = resp
             dict_msg = protobuf_to_dict(resp_msg)
-            template_vars['friend_list'] = core_personlist(dict_msg['peers'])
+            if 'peers' in dict_msg:
+                template_vars['friend_list'] = core_personlist(dict_msg['peers'])
 
     except Exception, e:
         logging.info("Unexpected Exception: %s" % (e))
@@ -64,7 +65,8 @@ def friend_details(request, friend_id):
         if resp:
             (resp_id, resp_msg) = resp
             dict_msg = protobuf_to_dict(resp_msg)
-            template_vars['friend_list'] = core_personlist(dict_msg['peers'])
+            if 'peers' in dict_msg:
+                template_vars['friend_list'] = core_personlist(dict_msg['peers'])
 
 
     except Exception, e:
